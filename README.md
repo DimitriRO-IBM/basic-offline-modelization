@@ -1,1 +1,65 @@
-# basic-offline-modelization
+# Basic Offline Modelization
+
+This is a basic example of the basic modelization for Offline Mode.
+
+PlantUml:
+
+```plantuml
+@startuml
+title Class Diagram for Offline models
+
+skinparam class {
+    BackgroundColor white
+    HeaderBackgroundColor DeepSkyBlue
+    StereotypeFontColor DeepSkyBlue
+    BorderColor DeepSkyBlue
+    ArrowColor DeepSkyBlue
+}
+
+skinparam note {
+    BackgroundColor DeepSkyBlue
+    BorderColor DeepSkyBlue
+    FontColor AliceBlue
+}
+
+skinparam shadowing false
+
+abstract class OfflineModel<GenericType> {
+    any [string key]NODE
+    void saveModel()
+    {abstract} -GenericType syncModel()
+}
+
+note as prefaceNote
+    OfflineModel will be used ad a basis for any
+    Model that should be saved onto IndexedDB
+end note
+
+class Example {
+    any [string key]
+    any someMethods()
+}
+
+class ExampleOffline {
+    any [string key]
+    -Example syncModel()
+}
+
+ExampleOffline .. Example
+
+OfflineModel <|-- ExampleOffline : OfflineModel<Example>
+
+note as genericAttributes
+    any [string key] is a notation used as
+    a generic way to say that the class
+    will implement each of its attributes
+    as it is needed.
+end note
+
+OfflineModel .. genericAttributes
+genericAttributes .. ExampleOffline
+
+note right of Example: This is the basis model used as\nGenerics for ExampleModel
+
+@enduml
+```
